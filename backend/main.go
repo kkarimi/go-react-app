@@ -6,6 +6,16 @@ import (
 	"net/http"
 )
 
+type Message struct {
+	Name string      `json:"name"`
+	Data interface{} `json:"data"`
+}
+
+type Channel struct {
+	Id   string `json:"id"`
+	Name string `json:"name"`
+}
+
 // handle cross-origin by func
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
@@ -26,13 +36,13 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 		return
 	}
-	// echo incoming message back, handle any errors
+
 	for {
-		msgType, msg, err := socket.ReadMessage()
-		fmt.Println(string(msg))
-		if err = socket.WriteMessage(msgType, msg); err != nil {
+		var inMessage Message
+		if err := socket.ReadJSON(&inMessage); err != nil {
 			fmt.Println(err)
-			return
+			break
 		}
+		fmt.Printf("%#v\n", inMessage)
 	}
 }

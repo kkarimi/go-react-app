@@ -3,7 +3,9 @@ package main
 import (
 	"fmt"
 	"github.com/gorilla/websocket"
+	"github.com/mitchellh/mapstructure"
 	"net/http"
+	"time"
 )
 
 type Message struct {
@@ -44,5 +46,42 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 		fmt.Printf("%#v\n", inMessage)
+		switch inMessage.Name {
+		case "channel add":
+			err := addChannel(inMessage.Data)
+			if err != nil {
+				outMessage := Message{"error", err}
+				if err := socket.WriteJSON(outMessage); err != nil {
+					fmt.Println(err)
+					break
+				}
+			}
+		case "channel subscribe":
+			// use go routines to create a light thread
+			// so not to block app from other actions
+			go subscribeChannel(socket)
+		}
+	}
+}
+
+func addChannel(data interface{}) error {
+	var channel Channel
+	err := mapstructure.Decode(data, &channel)
+	if err != nil {
+		return err
+	}
+	channel.Id = "1"
+	// fmt.Printf("%#v\n", channel)
+	fmt.Println("added channel")
+	return nil
+}
+
+func subscribeChannel(socket *websocket.Conn) {
+	for {
+		time.Sleep(time.Second * 1)
+		message := Message{"channel add",
+			Channel{"1", "Some new channel"}}
+		socket.WriteJSON(message)
+		fmt.Println("send new channel")
 	}
 }

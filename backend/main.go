@@ -8,7 +8,7 @@ import (
 
 func main() {
 	session, err := r.Connect(r.ConnectOpts{
-		Address:  "localhost:28015",
+		Address:  RethinkHost,
 		Database: "chatserver",
 	})
 	if err != nil {
@@ -28,5 +28,5 @@ func main() {
 	// Message routes
 
 	http.Handle("/", router)
-	http.ListenAndServe(":4000", nil)
+	http.ListenAndServe(BackendPort, nil)
 }

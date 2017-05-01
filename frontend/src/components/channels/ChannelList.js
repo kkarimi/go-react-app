@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-import Channel from './Channel.jsx';
+import Channel from './Channel.js';
 
 class ChannelList extends Component{
   render(){

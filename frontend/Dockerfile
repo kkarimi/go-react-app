@@ -5,6 +5,6 @@ WORKDIR /src
 
 RUN npm install --loglevel warn
 
-EXPOSE 4001
+EXPOSE 3000
 
 CMD [ "npm", "start" ]

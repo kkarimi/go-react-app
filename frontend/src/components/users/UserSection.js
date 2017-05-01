@@ -1,6 +1,6 @@
 import React from 'react';
-import UserForm from './UserForm.jsx';
-import UserList from './UserList.jsx';
+import UserForm from './UserForm.js';
+import UserList from './UserList.js';
 
 class UserSection extends React.Component{
   render(){

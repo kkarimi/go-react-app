@@ -1,5 +1,5 @@
 import React from 'react';
-import User from './User.jsx';
+import User from './User.js';
 
 class UserList extends React.Component{
   render(){

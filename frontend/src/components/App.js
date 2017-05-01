@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import ChannelSection from './channels/ChannelSection.jsx';
-import UserSection from './users/UserSection.jsx';
-import MessageSection from './messages/MessageSection.jsx';
+import ChannelSection from './channels/ChannelSection.js';
+import UserSection from './users/UserSection.js';
+import MessageSection from './messages/MessageSection.js';
 import Socket from '../socket.js';
 
 class App extends Component{

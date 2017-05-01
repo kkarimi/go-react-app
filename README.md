@@ -1,5 +1,5 @@
 # go-react-app
-Playing around with Go and React
+This is just me playing around with Go, React and RethinkDB. Nothing to see here for now!
 
 To run:
 - Ensure you have docker-compose and run `./run.sh`

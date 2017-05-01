@@ -26,7 +26,7 @@ func main() {
 	// router.Handle("user unsubscribe", unsubscribeIser)
 
 	// Message routes
-
+	println("Running...")
 	http.Handle("/", router)
 	http.ListenAndServe(BackendPort, nil)
 }

@@ -27,6 +27,8 @@ func main() {
 	}
 	router := NewRouter(session)
 	router.Handle("channel add", addChannel)
+	router.Handle("channel subscribe", subscribeChannel)
+	route.Handle("channel unsubscribe", unsubscribeChannel)
 	http.Handle("/", router)
 	http.ListenAndServe(":4000", nil)
 }

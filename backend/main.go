@@ -7,6 +7,15 @@ import (
 )
 
 func main() {
+
+	if RethinkHost != "" {
+		RethinkHost = "db:28015"
+	}
+
+	if BackendPort != "" {
+		BackendPort = ":4000"
+	}
+
 	session, err := r.Connect(r.ConnectOpts{
 		Address:  RethinkHost,
 		Database: "chatserver",

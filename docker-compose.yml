@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 services:
   backend:
     build:
@@ -7,11 +7,23 @@ services:
     restart: always
     ports:
       - 4000:4000
+    depends_on:
+      - db
+    links:
+      - db
   db:
     image: rethinkdb
     ports: 
       - 28015:28015
+      - 8080:8080
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: always
     ports:
-      - "4001:8080"
+      - 3000:3000
+    depends_on:
+      - backend
+    links:
+      - backend

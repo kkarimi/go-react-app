@@ -1,0 +1,4 @@
+FROM golang:onbuild
+ENV RETHINK_DB_HOST="rethinkdb:28015"
+ENV BACKEND_PORT=":4000"
+EXPOSE 4000

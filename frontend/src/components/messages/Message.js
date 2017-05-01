@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+
 import fecha from 'fecha';
 
 class Message extends Component{
@@ -18,7 +20,7 @@ class Message extends Component{
 }
 
 Message.propTypes = {
-  message: React.PropTypes.object.isRequired
+  message: PropTypes.object.isRequired
 }
 
 export default Message

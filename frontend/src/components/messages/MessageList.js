@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+
 import Message from './Message.js';
 
 class MessageList extends Component{
@@ -15,6 +17,6 @@ class MessageList extends Component{
   }
 }
 MessageList.propTypes = {
-  messages: React.PropTypes.array.isRequired
+  messages: PropTypes.array.isRequired
 }
 export default MessageList

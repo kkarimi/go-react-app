@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 
 class MessageForm extends Component{
   onSubmit(e){
@@ -30,8 +31,8 @@ class MessageForm extends Component{
 }
 
 MessageForm.propTypes = {
-  activeChannel: React.PropTypes.object.isRequired,
-  addMessage: React.PropTypes.func.isRequired
+  activeChannel: PropTypes.object.isRequired,
+  addMessage: PropTypes.func.isRequired
 }
 
 export default MessageForm

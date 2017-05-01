@@ -23,6 +23,9 @@ _testmain.go
 *.test
 *.prof
 
+# JS
+bundle.js
+
 # editor / misc
 .idea
 .vscode/

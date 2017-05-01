@@ -1,0 +1,17 @@
+version: '2'
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 4000:4000
+  db:
+    image: rethinkdb
+    ports: 
+      - 28015:28015
+  frontend:
+    build: ./frontend
+    ports:
+      - "4001:8080"

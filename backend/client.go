@@ -1,50 +1,37 @@
 package main
 
 import (
-	"fmt"
 	r "github.com/dancannon/gorethink"
 	"github.com/gorilla/websocket"
+	"log"
 )
 
-// Do not communicate by sharing memory,
-// Share memory by communicating
-
-// send messages safely from one go routines to another
-
-//FindHandler func
 type FindHandler func(string) (Handler, bool)
 
-//Message Struct
-type Message struct {
-	Name string      `json:"name"`
-	Data interface{} `json:"data"`
-}
-
-//Client struct
 type Client struct {
 	send         chan Message
 	socket       *websocket.Conn
 	findHandler  FindHandler
 	session      *r.Session
 	stopChannels map[int]chan bool
+	id           string
+	userName     string
 }
 
-// NewStopChannel stops new channels
-func (client *Client) NewStopChannel(stopKey int) chan bool {
-	client.stopForKey(stopKey)
+func (c *Client) NewStopChannel(stopKey int) chan bool {
+	c.StopForKey(stopKey)
 	stop := make(chan bool)
-	client.stopChannels[stopKey] = stop
+	c.stopChannels[stopKey] = stop
 	return stop
 }
 
-func (client *Client) stopForKey(key int) {
-	if ch, found := client.stopChannels[key]; found {
+func (c *Client) StopForKey(key int) {
+	if ch, found := c.stopChannels[key]; found {
 		ch <- true
-		delete(client.stopChannels, key)
+		delete(c.stopChannels, key)
 	}
 }
 
-// Read Reads
 func (client *Client) Read() {
 	var message Message
 	for {
@@ -59,11 +46,7 @@ func (client *Client) Read() {
 }
 
 func (client *Client) Write() {
-	// Reciever in paranthesis makes this a method of
-	// the client
 	for msg := range client.send {
-		//TODO: socket.sendJSON(msg)
-		fmt.Printf("%#v\n", msg)
 		if err := client.socket.WriteJSON(msg); err != nil {
 			break
 		}
@@ -71,23 +54,34 @@ func (client *Client) Write() {
 	client.socket.Close()
 }
 
-// Close closes channels we don't need
-func (client *Client) Close() {
-	for _, ch := range client.stopChannels {
+func (c *Client) Close() {
+	for _, ch := range c.stopChannels {
 		ch <- true
 	}
-	close(client.send)
+	close(c.send)
+	// delete user
+	r.Table("user").Get(c.id).Delete().Exec(c.session)
 }
 
-// NewClient func
-// convension to initialise complex objects
-// as no Constructor in Go
-func NewClient(socket *websocket.Conn, findHandler FindHandler, session *r.Session) *Client {
+func NewClient(socket *websocket.Conn, findHandler FindHandler,
+	session *r.Session) *Client {
+	var user User
+	user.Name = "anonymous"
+	res, err := r.Table("user").Insert(user).RunWrite(session)
+	if err != nil {
+		log.Println(err.Error())
+	}
+	var id string
+	if len(res.GeneratedKeys) > 0 {
+		id = res.GeneratedKeys[0]
+	}
 	return &Client{
 		send:         make(chan Message),
 		socket:       socket,
 		findHandler:  findHandler,
 		session:      session,
 		stopChannels: make(map[int]chan bool),
+		id:           id,
+		userName:     user.Name,
 	}
 }

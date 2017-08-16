@@ -32,3 +32,6 @@ bundle.js
 
 # built backend
 backend
+
+# dep
+vendor/

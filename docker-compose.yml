@@ -4,7 +4,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    restart: always
+    restart: never
     ports:
       - 4000:4000
     depends_on:
@@ -20,7 +20,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    restart: always
+    restart: never
     ports:
       - 3000:3000
     depends_on:

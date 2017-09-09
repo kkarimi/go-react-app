@@ -1,9 +1,10 @@
 package main
 
 import (
-	r "github.com/dancannon/gorethink"
 	"log"
 	"net/http"
+
+	r "github.com/dancannon/gorethink"
 )
 
 func main() {
